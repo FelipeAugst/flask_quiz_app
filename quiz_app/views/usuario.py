@@ -2,11 +2,9 @@ from flask import Blueprint,abort,request
 
 from flask import request,abort,jsonify,render_template,make_response,Blueprint
 from markupsafe import escape
+from .dados import db
+from quiz_app import auth
 
-#base de dados para testarmos as funções 
-dados = {"usuarios":[{"nome":"felipe","email":"felipe@felipe","senha":"1234"}, 
-           {"nome":"antonio","email":"antonio@antonio","senha":"1234"}, 
-           {"nome":"carlos","email":"carlos@carlos","senha":"1234"}], }
 
 
 user = Blueprint("user",__name__,url_prefix="/usuario")
@@ -18,11 +16,10 @@ def criar_usuario():
         nome= usuario['nome']
         email= usuario['email']
         nick = usuario['nick']
-        nick = usuario['senha']
-        dados['usuarios'].append(usuario)
+        senha = usuario['senha']
+        db.append(usuario)
         criado= {"criado":{"nome":nome,"email":email}}
         resp = make_response()
-        resp.set_cookie("dados",criado.__str__())
         return resp
 
 
@@ -32,15 +29,16 @@ def criar_usuario():
 
 @user.get("/")
 def mostrar_usuario():
-    return jsonify(request.cookies.get("dados"))
+    return jsonify(db)
 
 
 @user.get("/<string:usuario>")
+@auth.autenticar
 def buscar_usuario(usuario):
-    tamanho = len(dados['usuarios'])
+    tamanho = len(db['usuarios'])
     for idx in range(tamanho):
-        if dados['usuarios'][idx]['nome']== usuario:
-            return dados['usuarios'][idx]
+        if db[idx]['nome']== usuario:
+            return db['usuarios'][idx]
             
     return "<h1>Usuario nao encontrado</h1>"
 
@@ -48,18 +46,27 @@ def buscar_usuario(usuario):
 
 
 @user.put("/alterar/<string:nome>")
+@auth.autenticar
 def altera_usuario(nome):
     json = request.json
     email= json['email']
-    for usuario in dados['usuarios']:
+    for usuario in db:
         if usuario['nome']== nome:
             usuario['email']= email
-            return jsonify(dados)
+            return jsonify(db)
     return "<h1>Usuario nao encontrado</h1>"
 
 
 
     
 @user.delete("/deletar/<string:usuario>")
+@auth.autenticar
 def deletar_usuario(usuario):
-    tamanho = len(dados['usuarios'])
+    tamanho = len(db)
+    for idx in range(tamanho):
+        if db[idx]['nome']== usuario:
+            db.pop(idx)
+            return "Deletado"
+            
+    return "<h1>Usuario nao encontrado</h1>"
+
