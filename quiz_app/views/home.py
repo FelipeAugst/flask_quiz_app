@@ -10,8 +10,10 @@ home = Blueprint("home",__name__)
 def home_page():return f"<h1>Pagina Principal</h1>"
 
 
-@home.post("/login")
+@home.route("/login",mwthods=['POST','GET'])
 def login():
+    if request.method== "GET":
+        return "<h1>Tela de login</h1>"
     try:
         dados = request.json
         nick= dados['nick']
