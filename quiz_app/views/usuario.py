@@ -6,7 +6,7 @@ from markupsafe import escape
 #base de dados para testarmos as funções 
 dados = {"usuarios":[{"nome":"felipe","email":"felipe@felipe","senha":"1234"}, 
            {"nome":"antonio","email":"antonio@antonio","senha":"1234"}, 
-           {"nome":"carlos","email":"carlos@carlos","senha":"1234"}],"status_code":200 }
+           {"nome":"carlos","email":"carlos@carlos","senha":"1234"}], }
 
 
 user = Blueprint("user",__name__,url_prefix="/usuario")
