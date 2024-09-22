@@ -10,7 +10,7 @@ home = Blueprint("home",__name__)
 def home_page():return f"<h1>Pagina Principal</h1>"
 
 
-@home.route("/login",mwthods=['POST','GET'])
+@home.route("/login",methods=['POST','GET'])
 def login():
     if request.method== "GET":
         return "<h1>Tela de login</h1>"
