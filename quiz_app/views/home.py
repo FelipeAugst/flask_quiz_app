@@ -21,16 +21,16 @@ def login():
         for usuario in db:
             if usuario['nick']== nick:
                 if usuario['senha']==senha:
-                    resp = make_response(redirect("/"))
-                    token = auth.gerar_token("1234",{"nick":nick,"senha":senha})
+                    resp = make_response("logado",200)
+                    token = auth.gerar_token("1234",{"userid":usuario['id']})
                     resp.set_cookie("auth",token)
-
                     return resp
                 else:
                     return abort(403,"senha incorreta")
         return abort(403,"usuario nao encontrado")
         
     except Exception as ex:
-        return abort(403,ex)
+        print(ex)
+        return abort(404)
 
     

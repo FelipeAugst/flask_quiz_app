@@ -45,26 +45,30 @@ def buscar_usuario(usuario):
 
 
 
-@user.put("/alterar/<string:nome>")
+@user.put("/alterar/<int:id>")
 @auth.autenticar
-def altera_usuario(nome):
+def altera_usuario(id):
     json = request.json
     email= json['email']
+    nome= json['nome']
+    nick= json['nick']
     for usuario in db:
-        if usuario['nome']== nome:
+        if usuario['id']== id:
             usuario['email']= email
+            usuario['nick']=nick
+            usuario['nome']=nome
             return jsonify(db)
     return "<h1>Usuario nao encontrado</h1>"
 
 
 
     
-@user.delete("/deletar/<string:usuario>")
+@user.delete("/deletar/<int:id>")
 @auth.autenticar
-def deletar_usuario(usuario):
+def deletar_usuario(id):
     tamanho = len(db)
     for idx in range(tamanho):
-        if db[idx]['nome']== usuario:
+        if db[idx]['id']== id:
             db.pop(idx)
             return "Deletado"
             
