@@ -8,8 +8,8 @@ def create_app(debug=True):
     app.config['DEBUG']=debug
     app.register_blueprint(usuario.user)
     app.register_blueprint(home.home)
-    print("chave eh:" ,app.secret_key)
-    
+  
+
 
 
     return app

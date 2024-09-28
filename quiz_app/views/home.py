@@ -4,21 +4,19 @@ from quiz_app import auth
 import bcrypt
 
 
-home = Blueprint("home",__name__)
+home = Blueprint("home",__name__,url_prefix="/")
 
 
 @home.get("/")
 def home_page():return f"<h1>Pagina Principal</h1>"
 
 
-@home.route("/login",methods=['POST','GET'])
+@home.post("/login")
 def login():
-    if request.method== "GET":
-        return "<h1>Tela de login</h1>"
     try:
         dados = request.json
         nick= dados['nick']
-        senha = bcrypt.hashpw(dados['senha'])
+        senha = dados['senha']
         for usuario in db:
             if usuario['nick']== nick:
                 if usuario['senha']==senha:
