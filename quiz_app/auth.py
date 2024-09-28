@@ -1,11 +1,14 @@
 import jwt
-from flask import request, redirect,abort
+from flask import request, redirect,abort,session
 from functools import wraps
+import config
 
 
 
 
 def gerar_token(secret,data=None):
+    chave= config.SECRET_KEY
+    print(chave)
     token= jwt.encode(data,secret)
     return token
 
@@ -13,7 +16,8 @@ def gerar_token(secret,data=None):
 def autenticar(handler):
     @wraps(handler)
     def verifica_token(**kwargs):
-        chave="1234"
+        chave= config.SECRET_KEY
+        print(chave)
         token = request.cookies.get("auth")
         dados = jwt.decode(token,chave,algorithms=['HS256'])
         if dados == None:

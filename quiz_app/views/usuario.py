@@ -4,6 +4,7 @@ from flask import request,abort,jsonify,render_template,make_response,Blueprint
 from markupsafe import escape
 from .dados import db
 from quiz_app import auth
+import bcrypt
 
 
 
@@ -16,7 +17,7 @@ def criar_usuario():
         nome= usuario['nome']
         email= usuario['email']
         nick = usuario['nick']
-        senha = usuario['senha']
+        senha = bcrypt.hashpw(usuario['senha'])
         db.append(usuario)
         criado= {"criado":{"nome":nome,"email":email}}
         resp = make_response()

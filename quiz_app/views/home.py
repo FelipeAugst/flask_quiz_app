@@ -1,6 +1,7 @@
-from flask import Blueprint,request,abort,redirect,make_response
+from flask import Blueprint,request,abort,redirect,make_response,session
 from .dados import db
 from quiz_app import auth
+import bcrypt
 
 
 home = Blueprint("home",__name__)
@@ -17,12 +18,13 @@ def login():
     try:
         dados = request.json
         nick= dados['nick']
-        senha = dados['senha']
+        senha = bcrypt.hashpw(dados['senha'])
         for usuario in db:
             if usuario['nick']== nick:
                 if usuario['senha']==senha:
                     resp = make_response("logado",200)
-                    token = auth.gerar_token("1234",{"userid":usuario['id']})
+                    chave= session.get("SECRET_KEY")
+                    token = auth.gerar_token(chave,{"userid":usuario['id']})
                     resp.set_cookie("auth",token)
                     return resp
                 else:
