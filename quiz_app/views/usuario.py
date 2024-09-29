@@ -14,7 +14,7 @@ user = Blueprint("user",__name__,url_prefix="/usuario")
 user.register_blueprint(senha)
 
 
-@user.route("/criar",methods=['POST'])
+@user.route("/criar/",methods=['POST'])
 def criar_usuario():
     usuario = request.json
     nome= usuario['nome']
@@ -37,8 +37,7 @@ def mostrar_usuario():
     return jsonify(db)
 
 
-@user.get("/<int:id>")
-@auth.autenticar
+@user.get("/<int:id>/")
 def buscar_usuario(id):
     usuario = buscar(db,id)
     if usuario==None: 
@@ -48,7 +47,7 @@ def buscar_usuario(id):
 
 
 
-@user.put("/alterar/<int:id>")
+@user.put("/alterar/<int:id>/")
 @auth.autenticar
 def alterar_usuario(id):
     json = request.json
@@ -68,7 +67,7 @@ def alterar_usuario(id):
 
 
     
-@user.delete("/deletar/<int:id>")
+@user.delete("/deletar/<int:id>/")
 @auth.autenticar
 def deletar_usuario(id):
     usuario= buscar(db,id)
