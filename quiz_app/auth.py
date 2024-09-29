@@ -18,7 +18,6 @@ def autenticar(handler):
     @wraps(handler)
     def verifica_token(**kwargs):
         chave= config.SECRET_KEY 
-        print(chave)
         token = request.cookies.get("auth")
         dados = jwt.decode(token,chave,algorithms=['HS256'])
         if dados == None:
