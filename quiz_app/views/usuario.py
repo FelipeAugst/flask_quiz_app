@@ -3,8 +3,9 @@ from flask import Blueprint,abort,request
 from flask import request,abort,jsonify,render_template,make_response,Blueprint
 from markupsafe import escape
 from .dados import db
-from quiz_app import auth
+from quiz_app import auth,senhas
 import bcrypt
+
 
 
 
@@ -12,21 +13,21 @@ user = Blueprint("user",__name__,url_prefix="/usuario")
 
 @user.route("/criar",methods=['POST'])
 def criar_usuario():
-    try:
-        usuario = request.json
-        nome= usuario['nome']
-        email= usuario['email']
-        nick = usuario['nick']
-        senha = bcrypt.hashpw(usuario['senha'])
-        db.append(usuario)
-        criado= {"criado":{"nome":nome,"email":email}}
-        resp = make_response()
-        return resp
+    usuario = request.json
+    nome= usuario['nome']
+    email= usuario['email']
+    nick = usuario['nick']
+    usuario['id']= len(db)+1
 
+    senha = usuario['senha']
+    senha_criptografada= senhas.criptografar_senha(senha)
+    usuario['senha']= senha_criptografada
 
+    db.append(usuario)
+    criado= {"criado":{"nome":nome,"email":email}}
+    resp = make_response()
+    return resp
 
-    except:
-        abort(400,"dados invalidos")
 
 @user.get("/")
 def mostrar_usuario():

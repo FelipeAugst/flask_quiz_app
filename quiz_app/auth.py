@@ -1,22 +1,23 @@
 import jwt
 from flask import request, redirect,abort,session
 from functools import wraps
-import config
+from quiz_app import config
+import bcrypt
 
 
 
 
-def gerar_token(secret,data=None):
-    chave= config.SECRET_KEY
-    print(chave)
-    token= jwt.encode(data,secret)
+
+def gerar_token( chave=config.SECRET_KEY,dados=None):
+    
+    token= jwt.encode(dados,chave)
     return token
 
 
 def autenticar(handler):
     @wraps(handler)
     def verifica_token(**kwargs):
-        chave= config.SECRET_KEY
+        chave= config.SECRET_KEY 
         print(chave)
         token = request.cookies.get("auth")
         dados = jwt.decode(token,chave,algorithms=['HS256'])
