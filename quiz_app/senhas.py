@@ -2,7 +2,7 @@ import bcrypt
 
 def criptografar_senha(senha):
     senha = bytes(senha,encoding='utf-8')
-    salt= bcrypt.gensalt
+    salt= bcrypt.gensalt()
     senha_criptografada= bcrypt.hashpw(senha,salt)
     return str(senha_criptografada,encoding='utf-8')
 
