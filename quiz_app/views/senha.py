@@ -7,7 +7,7 @@ from .dados import db,buscar
 senha = Blueprint("senha",__name__,url_prefix="/senha")
 
 
-@senha.post("/<int:id>/alterar")
+@senha.post("/<int:id>/alterar/")
 @autenticar
 def alterar_senha(id):
     dados = request.json
