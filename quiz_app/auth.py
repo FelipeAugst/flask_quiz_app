@@ -19,12 +19,14 @@ def autenticar(handler):
     def verifica_token(**kwargs):
         chave= config.SECRET_KEY 
         token = request.cookies.get("auth")
-        dados = jwt.decode(token,chave,algorithms=['HS256'])
-        if dados == None:
-            redirect("/login")
-        if dados['userid'] != kwargs['id']:
-            abort(403,"Operacao nao permitida")
-
-        return handler(**kwargs)
+        if token == None:
+            return redirect("/login")
+        try:
+            dados = jwt.decode(token,chave,algorithms=['HS256'])
+            if dados['userid'] != kwargs['id']:
+                return abort(403,"Operacao nao permitida")
+            return handler(**kwargs)
+        except:
+            return abort(403,"falha ao extrair token")
     return verifica_token
 

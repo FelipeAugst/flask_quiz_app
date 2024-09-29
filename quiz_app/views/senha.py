@@ -4,10 +4,10 @@ import quiz_app.seguranca as seguranca
 from .dados import db,buscar
 
 
-senha = Blueprint("senha",__name__,url_prefix="/senha")
+senha = Blueprint("senha",__name__,url_prefix="<int:id>/senha")
 
 
-@senha.post("/<int:id>/alterar/")
+@senha.put("/alterar/")
 @autenticar
 def alterar_senha(id):
     dados = request.json

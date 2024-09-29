@@ -13,8 +13,17 @@ home = Blueprint("home",__name__,url_prefix="/")
 def home_page():return f"<h1>Pagina Principal</h1>"
 
 
-@home.post("/login/")
+@home.get("/logout")
+def logout():
+     resp = make_response("Logout efetuado")
+     resp.delete_cookie("auth")
+     return resp
+     
+
+@home.route("/login/",methods=["GET","POST"])
 def login():
+        if request.method=="GET":
+            return "Tela de login"
         dados = request.json
         nick= dados['nick']
         senha = dados['senha']
