@@ -1,2 +1,7 @@
 SECRET_KEY = "cmFuZG9tIHN0cmluZw=="
 TRAP_BAD_REQUEST_ERRORS=True
+
+DATABASE_CONECTION = {
+    'PATH' : '.\\DATABASE.db',
+    'DRIVER': 'sqlite3'
+}
